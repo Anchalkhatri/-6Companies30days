@@ -1,0 +1,40 @@
+/*
+ You may recall that an array arr is a mountain array if and only if:
+
+   arr.length >= 3
+There exists some index i (0-indexed) with 0 < i < arr.length - 1 such that:
+   arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+   arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+Given an integer array arr, return the length of the longest subarray, which is a mountain. Return 0 if there is no mountain subarray.
+
+*/
+
+//time complexity : O(n)
+//space complexity : O(1) 
+
+
+class Solution {
+public:
+    int longestMountain(vector<int>& arr) {
+        int cnt1,cnt2;
+        int count=0;
+        int i=1;
+        int n=arr.size();
+        while(i<n){
+            cnt1=0;cnt2=0;
+            while(i<n && arr[i-1]==arr[i]){i++;}
+            while(i<n && arr[i-1]<arr[i]){
+                cnt1++;
+                i++;
+            }
+            while(i<n && arr[i-1]>arr[i]){
+                cnt2++;
+                i++;
+            }
+            if(cnt1 && cnt2){
+                count=max(count,cnt1+cnt2+1);
+            }
+        }
+        return count;
+    }
+};
