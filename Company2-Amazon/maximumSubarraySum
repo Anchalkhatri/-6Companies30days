@@ -1,0 +1,55 @@
+/*
+  You are given an integer array nums and an integer k. Find the maximum subarray sum of all the subarrays of nums that meet the following conditions:
+
+       The length of the subarray is k, and
+       All the elements of the subarray are distinct.
+Return the maximum subarray sum of all the subarrays that meet the conditions. If no subarray meets the conditions, return 0.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+*/
+
+
+//time complexity : O(n)
+//space complexity : O(1)
+
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+       int freq[100000 + 1] = {0};
+        int counter = 0;
+        long long mx = 0, sum = 0;
+
+        // Initial window setup
+        for(int i = 0; i < k; i++) {
+            freq[nums[i]]++;
+            if(freq[nums[i]] == 2) counter++; // Duplicate found
+            sum += nums[i];
+        }
+
+        // Check if initial window is valid
+        if(counter == 0) {
+            mx = sum;
+        }
+
+        // Slide the window
+        for(int l = 0, r = k; r < nums.size(); l++, r++) {
+            // Remove the element going out of the window
+            sum -= nums[l];
+            freq[nums[l]]--;
+            if(freq[nums[l]] == 1) counter--; // Duplicate resolved
+
+            // Add the new element coming into the window
+            sum += nums[r];
+            freq[nums[r]]++;
+            if(freq[nums[r]] == 2) counter++; // New duplicate found
+
+            // Update max if the current window is valid
+            if(counter == 0) {
+                mx = max(mx, sum);
+            }
+        }
+
+        return mx;
+    }
+};
