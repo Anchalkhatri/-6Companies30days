@@ -1,0 +1,33 @@
+/*
+  Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+*/
+
+//Time complexity: O(n)
+//Space complexity: O(n)
+
+
+class Solution {
+public:
+    string frequencySort(string s) {
+        unordered_map<char, int> ans;
+        for (char a : s) {
+            ans[a]++;
+        }
+        string res;
+        while (!ans.empty()) {
+            char ch = '\0';
+            int nu = 0;
+            for (auto b : ans) {
+                if (b.second > nu) {
+                    nu = b.second;
+                    ch = b.first;
+                }
+            }
+            res.append(nu, ch);
+            ans.erase(ch);
+        }
+        return res;
+    }
+};
