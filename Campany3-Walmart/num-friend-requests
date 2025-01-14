@@ -1,0 +1,45 @@
+/*
+  There are n persons on a social media website. You are given an integer array ages where ages[i] is the age of the ith person.
+
+A Person x will not send a friend request to a person y (x != y) if any of the following conditions is true:
+
+    age[y] <= 0.5 * age[x] + 7
+    age[y] > age[x]
+    age[y] > 100 && age[x] < 100
+Otherwise, x will send a friend request to y.
+
+Note that if x sends a request to y, y will not necessarily send a request to x. Also, a person will not send a friend request to themself.
+
+Return the total number of friend requests made.
+*/
+
+//Time complexity: O(n)
+
+//Space complexity: O(1)
+
+
+
+class Solution {
+public:
+    int numFriendRequests(vector<int>& ages) {
+        int n = ages.size();
+        vector<int> v(121,0);
+        for(int i=0;i<n;i++){
+            v[ages[i]]++;
+        }
+        int ans = 0;
+        for(int x = 1; x <= 120; x++){
+            int n1 = v[x];
+            for(int y = 1; y <= 120; y++){
+                int n2 = v[y];
+                if(!(y <= (0.5 * x + 7) || y > x || ( y > 100 && x < 100))){
+                    ans += n1*n2;
+                    if(x==y){
+                        ans -= n1;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
