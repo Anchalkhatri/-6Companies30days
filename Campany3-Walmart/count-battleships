@@ -1,0 +1,42 @@
+/*
+  Given an m x n matrix board where each cell is a battleship 'X' or empty '.', return the number of the battleships on board.
+
+Battleships can only be placed horizontally or vertically on board. In other words, they can only be made of the shape 1 x k (1 row, k columns) or k x 1 (k rows, 1 column), where k can be of any size. At least one horizontal or vertical cell separates between two battleships (i.e., there are no adjacent battleships).
+*/
+
+
+//Time complexity : O(n*m)
+//Space complexity : O(n*m)
+
+
+
+class Solution {
+public:
+    void dfs (int i,int j, int n,int m, vector<vector<int>>& visited, vector<vector<char>>& board){
+        if (i<0||j<0||i>=n||j>=m|| visited[i][j]==1 || board[i][j]=='.'){
+            return ;
+        }
+        visited[i][j]=1;
+        dfs(i+1,j,n,m,visited,board);
+        dfs(i-1,j,n,m,visited,board);
+        dfs(i,j-1,n,m,visited,board);
+        dfs(i,j+1,n,m,visited,board);
+
+        
+    }
+    int countBattleships(vector<vector<char>>& board) {
+        int n=board.size();
+        int m=board[0].size();
+        vector<vector<int>> visited(n, vector<int> ( m , 0));
+        int count=0;
+        for (int i=0;i<n;i++){
+            for(int j=0;j<m ;j++){
+                if (board[i][j]=='X' && visited[i][j]==0){
+                    dfs(i,j,n,m,visited, board);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};
