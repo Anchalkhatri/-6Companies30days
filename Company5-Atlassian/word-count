@@ -1,0 +1,54 @@
+/*
+ You are given two 0-indexed arrays of strings startWords and targetWords. Each string consists of lowercase English letters only.
+
+For each string in targetWords, check if it is possible to choose a string from startWords and perform a conversion operation on it to be equal to that from targetWords.
+
+The conversion operation is described in the following two steps:
+
+Append any lowercase letter that is not present in the string to its end.
+For example, if the string is "abc", the letters 'd', 'e', or 'y' can be added to it, but not 'a'. If 'd' is added, the resulting string will be "abcd".
+Rearrange the letters of the new string in any arbitrary order.
+For example, "abcd" can be rearranged to "acbd", "bacd", "cbda", and so on. Note that it can also be rearranged to "abcd" itself.
+Return the number of strings in targetWords that can be obtained by performing the operations on any string of startWords.
+*/
+
+//Time complexity: O(M * mlog(m) + N * (nlogn + n)) , to sort each word and then searching in startSet
+//M is length of startWords, m is average length of words int startWords
+//N is length of targetWords, n is average length of words int targetWords
+//Space complexity: O(M*m) ,
+
+Storing words from startWords in sorted order.
+
+
+class Solution {
+public:
+    int wordCount(vector<string>& startWords, vector<string>& targetWords) {
+        unordered_set<string> startSet;
+        
+		
+        for(auto word : startWords) {
+			
+            sort(word.begin(), word.end()); 
+            startSet.insert(word);
+        }
+        
+        int count = 0;
+        
+        for(auto word : targetWords) {
+			
+            sort(word.begin(), word.end());
+            
+            for(int i=0; i<word.size(); i++) {
+				
+                string sortedWord = word.substr(0, i) + word.substr(i+1);
+				
+                if(startSet.find(sortedWord) != startSet.end()) {
+					
+                    count++;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+};
