@@ -1,0 +1,47 @@
+/*
+  Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+
+Only numbers 1 through 9 are used.
+Each number is used at most once.
+Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+*/
+
+//Time complexity: O(9^k)
+//Space complexity: O(k)
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        if (n > 45 || k > n) {
+            return {};
+        }
+
+        vector<vector<int>> res;
+        vector<int> currList;
+
+        // Helper function for Depth First Search (DFS)
+        dfs(1, currList, 0, k, n, res);
+        return res;
+    }
+    void dfs(int index, vector<int>& currList, int total, int k, int n, vector<vector<int>>& res) {
+        // Checks if the current list of numbers has length k and sums up to n
+        if (currList.size() == k) {
+            if (total == n) {
+                res.push_back(currList); // Add the current list to result
+            }
+            return;
+        }
+
+        // Loop iterates from index to 9
+        for (int i = index; i <= 9; ++i) {
+            int currTotal = total + i; // update the current total to include i
+            if (currTotal <= n) {
+                currList.push_back(i); // add current number to currList
+                dfs(i + 1, currList, currTotal, k, n, res); // recursive call
+                currList.pop_back(); // backtrack
+            } else {
+                return;
+            }
+        }
+    }
+};
